@@ -5,23 +5,25 @@ from reversi.board import (
 )
 from AI.minimax_endscore import minimax_endscore
 from AI.random_ai import random_ai
+from AI.ai_move import ai_move
+
 import random, copy
 
-def ai_move(board, player):
-    empty_count = sum(row.count(empty_slot) for row in board)
-    moves = valid_moves(board, player)
-    if not moves:
-        return None
+#def ai_move(board, player):
+#    empty_count = sum(row.count(empty_slot) for row in board)
+#    moves = valid_moves(board, player)
+#    if not moves:
+#        return None
 
-    if empty_count <= 7:
-        val, best = minimax_endscore(copy.deepcopy(board), player)
-        print(f"Tekoälyn arvio: {val}")
-        print(f"Tekoälyn siirto: {best}")
-        return best
-    else:
-        move = random.choice(moves)
-        print(f"Tekoälyn siirto: {move}")
-        return move
+#    if empty_count <= 7:
+#        val, best = minimax_endscore(copy.deepcopy(board), player)
+#        print(f"Tekoälyn arvio: {val}")
+#        print(f"Tekoälyn siirto: {best}")
+#        return best
+#    else:
+#        move = random.choice(moves)
+#        print(f"Tekoälyn siirto: {move}")
+#        return move
 
 
 def main():
