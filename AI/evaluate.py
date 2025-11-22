@@ -15,7 +15,7 @@ V = [
 
 # painokerroin jolla mobility vs matriisin painoarvot saadaan haluttuun tasapainoon, nyt painottaa matriisia 
 # ajattelin tähän vielä ehkä dynaamista painotusta joka muuttuu vuorojen edetessä 
-heuristic_weight = 5  
+#heuristic_weight = 5  
 
 # Kulman vierusruutujen bonus, kun kulma on pelaajalla 
 SAFE_CORNER_BONUS = 20
@@ -28,7 +28,7 @@ SAFE_SETS = {
     (7,7): [(6,7),(7,6),(6,6)]
 }
 
-def evaluate(board, player):
+def evaluate(board, player, weight):
     opponent = get_opponent(player)
 
     # 1. Mobility eli pelaajan optiot, tämän myös pitäisi mielestäni riittää  varmistamaan että vastus ei voita peliä
@@ -59,4 +59,4 @@ def evaluate(board, player):
                     positional_score -= SAFE_CORNER_BONUS
 
     # yhdistetty arvio joka palauttaa siirron pisteet
-    return mobility_score + positional_score * heuristic_weight
+    return mobility_score + positional_score * weight

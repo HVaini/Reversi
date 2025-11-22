@@ -12,7 +12,7 @@ def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999):
     # Ei siirtoja, käännetään arvo
     if not moves:
         opp = get_opponent(player)
-        val, move = minimax_midgame(copy.deepcopy(board), opp, depth - 1, evaluate, -beta, -alpha)
+        val, _ = minimax_midgame(copy.deepcopy(board), opp, depth - 1, evaluate, -beta, -alpha)
         return -val, None
 
     # esijärjestetyt siirrot parhaista huonoimpiin
@@ -27,7 +27,7 @@ def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999):
 
         opp = get_opponent(player)
 
-        val, move = minimax_midgame(b2, opp, depth - 1, evaluate, -beta, -alpha)
+        val, _ = minimax_midgame(b2, opp, depth - 1, evaluate, -beta, -alpha)
         val = -val 
 
         if val > best_val:

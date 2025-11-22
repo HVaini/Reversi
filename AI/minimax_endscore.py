@@ -1,9 +1,8 @@
 import random, copy
 from reversi.board import valid_moves, play_move, get_opponent, end_game, count_points, empty_slot
 
-def minimax_endscore(board, player):
-    #käy kaikki jäljellä olevat siirrot pelin loppuun ja optimoi pistemäärän, ei vielä alpha-betaa
-    #koska tahdon rakentaa tämän vaiheittain ja lisäten elementtejä vähän kerrallaan
+def minimax_endscore(board, player, alpha=-999999, beta=999999):
+    #käy kaikki jäljellä olevat siirrot pelin loppuun ja optimoi pistemäärän
     if end_game(board):
         b, w = count_points(board)
         return b - w, None
@@ -11,7 +10,7 @@ def minimax_endscore(board, player):
     moves = valid_moves(board, player)
     if not moves:
         opp = get_opponent(player)
-        val, move = minimax_endscore(copy.deepcopy(board), opp)
+        val, _ = minimax_endscore(copy.deepcopy(board), opp, -beta, -alpha)
         return -val, None
 
     best_val = -65
@@ -19,14 +18,22 @@ def minimax_endscore(board, player):
     for m in moves:
         b2 = copy.deepcopy(board)
         play_move(b2, m, player)
-        val, move = minimax_endscore(b2, get_opponent(player))
+        opp = get_opponent(player)
+
+        # kutsu vaihdettuna alpha/beta
+        val, _ = minimax_endscore(b2, opp, -beta, -alpha)
         val = -val
+
         if val > best_val:
-            best_val, best_move = val, m
+            best_val = val
+            best_move = m
 
+        # alpha–beta karsinta
+        if best_val >= beta:
+            return best_val, best_move
 
-    #tehdään tähän myöhemmin vielä sellainen vaihtoehto että jos paras tulos on tappiollinen niin ei optimoida tulosta vaan
-    #pyritään tekemään siirto joka pitää mahdollisimman monta voittavaa optiota avoinna jos vastus ei minimoi täydellisesti
+        # päivitetään alpha
+        alpha = max(alpha, best_val)
 
 
     return best_val, best_move
