@@ -1,11 +1,8 @@
 from AI.minimax_midgame import minimax_midgame
 from AI.evaluate import evaluate
 from AI.minimax_endscore import minimax_endscore
-from reversi.board import (
-    new_board, print_board, play_move, valid_moves,
-    get_opponent, black_piece, white_piece,
-    count_points, end_game, empty_slot
-)
+from AI.iterative_deepening_midgame import iterative_deepening_midgame
+from reversi.board import (new_board, print_board, play_move, valid_moves, get_opponent, black_piece, white_piece, count_points, end_game, empty_slot)
 import random, copy
 
 def evaluate_normal(board, player):
@@ -47,9 +44,9 @@ def ai_move(board, player):
 
         return best
 
-    # kutsutaan midgame-heuristiikkaa käyttävä minimax jos peli ei ole loppuvaiheessa
+    # kutsutaan iteratiivisen syventämisen kautta midgame-heuristiikkaa käyttävä minimax jos peli ei ole loppuvaiheessa
     elif empty_count <= 60:
-        val, best = minimax_midgame(copy.deepcopy(board), player, depth=5, evaluate=evaluate_normal, alpha=-999999, beta=999999)
+        val, best, reached = iterative_deepening_midgame(copy.deepcopy(board), player, evaluate=evaluate_normal, time_limit = 2, max_depth = 60)
         print(f"[Midgame] Tekoälyn arvio: {val}")
         print(f"[Midgame] Tekoälyn siirto: {best}")
         return best
