@@ -66,3 +66,61 @@ class TestMinimaxEndscore(unittest.TestCase):
         self.assertIsInstance(val, int)
         self.assertIsNone(move)
 
+    def test_no_moves_branch(self):
+        # musta dominoi, valkoinen ei voi pelata mutta peli ei ole loppu
+        board = [
+            ['X','X','X','X','X','X','X','.'],
+            ['X','X','X','X','X','X','X','O'],
+            ['X','X','X','X','X','X','X','O'],
+            ['X','X','X','X','X','X','X','O'],
+            ['X','X','X','X','X','X','X','O'],
+            ['X','X','X','X','X','X','X','O'],
+            ['X','X','X','X','X','O','.','O'],
+            ['X','X','X','X','X','.','.','O'],
+        ]
+
+        val, move = minimax_endscore(board, 'O') 
+
+        self.assertIsInstance(val, int)
+        self.assertIsNone(move)  
+
+    def test_best_val_branch(self):
+        board = [
+            ['.','X','X','X','X','X','X','X'],
+            ['O','O','O','O','O','O','O','.'],
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','.','O','X'],
+        ]
+
+        # 1,7 on ratkaistu manuaalisesti parhaaksi arvoksi
+        val, move = minimax_endscore(board, 'X')
+
+        self.assertEqual(move, (1,7))  
+
+    def test_endscore_finds_correct_value_and_alpha_beta_cuts(self):
+        # lauta luotu reversi-stockfish analysaattorilla
+        board = [
+            ['.', '.', '.', 'X', 'O', '.', '.', 'O'],
+            ['.', '.', 'X', 'X', 'X', 'O', 'O', 'O'],
+            ['.', 'X', 'O', 'X', 'O', 'X', 'X', 'O'],
+            ['X', 'O', 'X', 'O', 'O', 'O', 'X', '.'],
+            ['O', 'X', 'O', 'X', 'O', 'X', 'X', 'X'],
+            ['O', 'O', 'O', 'O', 'X', 'O', 'X', 'O'],
+            ['.', 'X', 'X', 'X', 'O', 'X', 'X', 'O'],
+            ['.', 'X', 'X', 'X', 'X', 'X', 'X', 'O'],
+        ]
+
+        val, move = minimax_endscore(board, 'X', alpha=-999999, beta=0)
+
+        # siirto, joka häviää vähiten
+        self.assertEqual(move, (2,0))
+
+        # val on negatiivinen 
+        self.assertLess(val, 0)
+
+
+

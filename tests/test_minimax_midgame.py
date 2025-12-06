@@ -5,6 +5,8 @@ from AI.minimax_midgame import minimax_midgame
 from AI.ai_move import evaluate_normal
 
 
+
+
 class TestMinimaxMidgame(unittest.TestCase):
 
     def test_depth_zero_returns_evaluate(self):
@@ -38,3 +40,67 @@ class TestMinimaxMidgame(unittest.TestCase):
         self.assertIsInstance(val, int)
         self.assertIsNotNone(move)
 
+
+    def test_midgame_pass_and_transposition(self):
+        # Pakotettu passitustilanne + transpositiohaaran aktivointi
+        board = [
+            ['.', 'X', 'X', 'X', 'X', 'X', 'X', '.'],
+            ['X', 'O', 'O', 'O', 'O', 'O', 'O', 'X'],
+            ['X', 'O', '.', 'O', 'O', 'O', 'O', 'X'],
+            ['X', 'O', 'O', 'X', 'O', 'O', 'O', 'X'],
+            ['X', 'O', 'O', 'O', 'O', 'O', 'O', 'X'],
+            ['X', 'O', 'O', 'O', 'O', 'O', 'O', 'X'],
+            ['X', 'O', 'O', 'O', 'O', 'O', 'O', 'X'],
+            ['.', 'X', 'X', 'X', 'X', 'X', 'X', '.']
+        ]
+
+        # depth=2 niin musta pelaa, valkoinen joutuu passaamaan
+        # evaluate_normal toimii syvyydellä 0
+
+        hash_moves = {}
+
+        val, move = minimax_midgame(
+            board,
+            black_piece,
+            depth=2,
+            evaluate=evaluate_normal,
+            hash_moves=hash_moves
+        )
+
+        
+        self.assertIsNotNone(move)
+
+        # siirto tallennettiin transpositiokirjastoon
+        self.assertTrue(len(hash_moves) > 0)
+
+
+    def test_midgame_finds_ending(self):
+        # aktivoituuko minimaxin lopputunnistus keskipelissä palauttaen suuren arvon
+        board = [
+        ['.', '.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', 'O', 'O', '.', '.', '.'],
+        ['.', '.', 'X', 'X', 'O', '.', '.', '.'],
+        ['.', '.', '.', 'O', '.', '.', '.', '.'],
+        ['.', '.', '.', 'O', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.'],
+        ]
+
+        
+
+        hash_moves = {}
+
+        val, move = minimax_midgame(
+            board,
+            white_piece,
+            depth=2,
+            evaluate=evaluate_normal,
+            hash_moves=hash_moves
+        )
+
+        
+        self.assertGreater(val, 100000)
+
+        
+        

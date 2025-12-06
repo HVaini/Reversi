@@ -1,15 +1,28 @@
 import copy
-from reversi.board import valid_moves, play_move, get_opponent
+from reversi.board import valid_moves, play_move, get_opponent, end_game, count_points, black_piece, white_piece
 from AI.reorder import reorder_moves
 
 def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, hash_moves=None):
 
-    #sama minimax logiikka kuin minimax_endgamessa, alpha beta lisätty
+    #tallennetaan siirrot transpositio-kirjastoon alpha-betan ja minimaxin tehostamiseksi
 
     if hash_moves is None:
         hash_moves = {}
 
     key = hash(str(board) + player)
+
+    # varmistetaan että jos peli päättyy millä tahansa syvyydellä niin palautettu arvo on niin suuri että se kumoaa heuristiikan
+    if end_game(board):
+        b, w = count_points(board)
+        if player == black_piece:
+            diff = b - w
+        else:  
+            diff = w - b
+
+        if diff == 0:
+            return 0, None
+
+        return diff * 100000, None
 
     if depth == 0:
         return evaluate(board, player), None

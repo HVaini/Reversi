@@ -30,6 +30,14 @@ def main():
     board = new_board()
     current_player = black_piece
 
+    choice = input("Valitse X (aloittava) painamalla 1 tai O painamalla 2:")
+    if choice == "2":
+        human_player = white_piece
+        ai_player = black_piece
+    else:
+        human_player = black_piece
+        ai_player = white_piece
+
     while True:
         print_board(board)
         b_score, w_score = count_points(board)
@@ -52,7 +60,7 @@ def main():
             continue
 
         # AI:n vuoro
-        if current_player == white_piece:
+        if current_player == ai_player:
             move = ai_move(board, current_player)
             if move:
                 play_move(board, move, current_player)
@@ -64,13 +72,15 @@ def main():
         move_input = input("Anna siirto muodossa 'rivi sarake': ")
         try:
             r, c = map(int, move_input.split())
+            #r -= 1
+            #c -= 1
             if (r, c) in valid:
                 play_move(board, (r, c), current_player)
                 current_player = get_opponent(current_player)
             else:
                 print("Virheellinen siirto, yritä uudelleen.")
         except Exception:
-            print("Anna siirto muodossa kaksi numeroa, esim. 2 3.")
+            print("Anna siirto muodossa kaksi numeroa välillä 0-7, esim. 2 3.")
 
 
 if __name__ == "__main__":

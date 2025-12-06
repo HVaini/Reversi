@@ -39,3 +39,21 @@ class TestAIMove(unittest.TestCase):
         move = ai_move(copy.deepcopy(board), white_piece)
 
         self.assertIsNotNone(move)
+
+
+    def test_ai_move_risk_mode_longshot_move(self):
+        #melko keinotekoinen tilanne jonka loin kattaatkseni longshot-haaran
+        board = [
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['X','O','O','O','O','O','O','O'],
+            ['O','O','O','O','O','O','O','O'],
+            ['.','.','.','.','X','X','X','X'],
+        ]
+
+        move = ai_move(board, black_piece)
+
+        self.assertIsNotNone(move)
