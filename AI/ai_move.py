@@ -2,24 +2,40 @@ from AI.minimax_midgame import minimax_midgame
 from AI.evaluate import evaluate
 from AI.minimax_endscore import minimax_endscore
 from AI.iterative_deepening_midgame import iterative_deepening_midgame
-from reversi.board import (new_board, print_board, play_move, valid_moves, get_opponent, black_piece, white_piece, count_points, end_game, empty_slot)
+from reversi.board import valid_moves, empty_slot
 import random, copy
 
 def evaluate_normal(board, player):
+    """
+    Oletusheuristiikka keskipeliin.
+    Painottaa enemmän positioarvoa.
+    """
     return evaluate(board, player, weight=5)
 
 def evaluate_longshot(board, player):
+    """
+    Tappiollisessa loppupeli-tilanteeessa kutsuttava heuristiikka.
+    Pyrkii tekemään pelistä monimutkaisempaa ja lisäämään omien
+    vaihtoehtojen määrää jotta jatkossa löytyy voitollinen linja.
+    """
     return evaluate(board, player, weight=1)
 
 
 def ai_move(board, player):
+    """
+    AI:n logiikkaa kontrolloiva funktio, joka valitsee pelitilanteen mukaan
+    käytettävän heuristiikan.
+    
+    :param board: Pelilaudan tilanne
+    :param player: Vuorossa oleva pelaaja
+    :return: siirto
+    """
     empty_count = sum(row.count(empty_slot) for row in board)
     moves = valid_moves(board, player)
     if not moves:
         return None
 
-    # kutsutaan loppupelin pisteratkaisin, mielestäni tämä on perusteltu osa koska ihminenkin pystyy laskemaan tässä vaiheessa pisteitä ja
-    # tämä antaa absoluuttisesti parhaan tuloksen
+    # 10 siirron kohdalla koko loppupeli pystytään ratkaisemaan täydellisesti ilman viivettä
     if empty_count <= 10:
         val, best = minimax_endscore(copy.deepcopy(board), player)
         print(f"[Endgame]Tekoälyn arvio: {val}")
@@ -51,7 +67,7 @@ def ai_move(board, player):
         print(f"[Midgame] Tekoälyn siirto: {best}")
         return best
 
-    # vaikkakin tämä on ilmeisen tarpeeton niin se on varmuuden vuoksi mukana jotta missään ennakoimattomassa tapauksessakaan
+    # varmuuden vuoksi mukana jotta missään ennakoimattomassa tapauksessakaan
     # siirto ei jää jumiin
     else:
         move = random.choice(moves)

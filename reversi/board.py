@@ -4,6 +4,8 @@ white_piece = 'O'
 board_size = 8
 
 def new_board():
+    """ Luo reversi-pelin aloitusasetelman pelilaudalle. """
+
     nb = []
     for i in range(board_size):
         row = []
@@ -18,10 +20,12 @@ def new_board():
     return nb
 
 def print_board(nb):
+    """ Tulostaa pelilaudan. """
     for row in nb:
         print(" ".join(row))
 
 def get_opponent(player):
+    """ Hakee vastustajan värin. """
     if player == black_piece:
         return white_piece
     elif player == white_piece:
@@ -31,6 +35,14 @@ def get_opponent(player):
 
 
 def valid_moves(board, player):
+    """ Käy läpi kaikki sääntöjen mukaiset siirrot joita vuorossa oleva
+    pelaaja voi pelata.
+
+    :param board: 8x8 pelilauta listojen listana.
+    :param player: Vuorossa oleva pelaaja, joko X tai O
+    :return: laillisten siirtojen lista koordinaatteina
+    """
+
     opponent = get_opponent(player)
     #suunnat koordinaattien muutoksina jotta voidaan edetä jokaista linjaa pitkin
     directions = {
@@ -72,9 +84,18 @@ def valid_moves(board, player):
 
 
 def play_move(board, move, player):
+    """ 
+    Toteuttaa pelaajan valitseman siirron. Sijoittaa pelinappulan ja kääntää
+    sääntöjen mukaan kääntyvät nappulat kaikilla linjoilla.
+
+    :param board: 8x8 pelilauta listojen listana
+    :param move: valitun siirron koordinaatit
+    :param player: siirron tekevä pelaaja
+    :return: ei palauta arvoa vaan päivittää parametrin board tilanteen
+    """
     opponent = get_opponent(player)
     move_row, move_col = move
-    #board[move_row][move_col] = player
+
     directions = {
     "up": (-1, 0),
     "down": (1, 0),
@@ -94,14 +115,12 @@ def play_move(board, move, player):
              while (0 <= row < board_size and 0 <= col < board_size) and board[row][col] == opponent:
                     row += vertical
                     col += horizontal
-             #if board[row][col] == player:
-                    #flipfrom = (row, col)
-             #row, col = flipfrom 
+
 
              #kävellään takaisin alkupisteeseen ja käännetään nappulat          
              if (0 <= row < board_size and 0 <= col < board_size) and board[row][col] == player:             
                         
-                        #board[row][col] = player
+                        
                         
                     r = row - vertical
                     c= col - horizontal
@@ -112,11 +131,15 @@ def play_move(board, move, player):
         board[move_row][move_col] = player
 
 def count_points(board):
+    """ Palauttaa kummankin pelaajan pisteet. """
+
     black_points = sum(row.count(black_piece) for row in board)
     white_points = sum(row.count(white_piece) for row in board)
     return black_points, white_points
 
 def end_game(board):
+    """ sisältää tarkistusehdot kaikille eri tavoille joilla peli voi päättyä"""
+
     black_count = sum(row.count(black_piece) for row in board)
     white_count = sum(row.count(white_piece) for row in board)
 
@@ -127,7 +150,7 @@ def end_game(board):
     # tai jos toisella ei nappuloita jäljellä, tällöin siirtoja ei enää ole kummallakaan 
     if black_count == 0 or white_count == 0:
         return True
-    # testatessa minimax_endscorea huomasin että tämä täytyy vielä lisätä tähänkin
+    # jos kummallakaan pelaajalla ei ole laillisia siirtoja
     if not valid_moves(board, black_piece) and not valid_moves(board, white_piece):
         return True
 

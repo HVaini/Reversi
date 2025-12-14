@@ -1,8 +1,17 @@
 import copy, time
 from AI.minimax_midgame import minimax_midgame
 
-def iterative_deepening_midgame(board, player, evaluate, 
-                                time_limit=2.0, max_depth=60):
+def iterative_deepening_midgame(board, player, evaluate, time_limit=2.0, max_depth=60):
+    """
+    Katkaisee minimax-haun kun aikaraja on täynnä. Mahdollistaa syvemmät haut
+    silloin kun haarautuvuus on pientä
+    
+    :param board: Pelilaudan tilanne
+    :param player: Vuorossa oleva pelaaja
+    :param evaluate: Heuristiikka-funktion antama siirron arvo
+    :param time_limit: Aikaraja jonka jälkeen ei tehdä uusia hakuja
+    :param max_depth: Suurin syvyys jos aikaraja ei katkaise ennen sitä
+    """
     
     start = time.time()
     best_move = None

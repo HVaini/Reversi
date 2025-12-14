@@ -3,9 +3,22 @@ from reversi.board import valid_moves, play_move, get_opponent, end_game, count_
 from AI.reorder import reorder_moves
 
 def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, hash_moves=None):
+    """
+    Pelin alku- ja keskivaiheen minimax alpha-beta-karsinnalla.
+    Kutsuu heuristiikkafunktiota joka palauttaa arvon syvyydeltä.
 
-    #tallennetaan siirrot transpositio-kirjastoon alpha-betan ja minimaxin tehostamiseksi
+    
+    :param board: Pelilaudan tilanne
+    :param player: Vuorossa oleva pelaaja
+    :param depth: hakusyvyyden maksimi
+    :param evaluate: Heuristiikkafunktio joka laskee pelitilanteen arvon
+    :param alpha: Pelaajan parhaan löydetyn siirron arvo
+    :param beta: Vastustajan parhaan löydetyn siirron arvo
+    :param hash_moves: Transpositiokirjasto johon tallennetaan eri asemien parhaita löydettyjä siirtoja 
+    :return: palauttaa evaluate-funktion arvon parhaalle siirrolle sekä itse siirron
+    """
 
+    # Luodaan transpositiokirjasto
     if hash_moves is None:
         hash_moves = {}
 
@@ -43,7 +56,6 @@ def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, 
     if stored in moves:
         moves.remove(stored)
         moves.insert(0, stored)
-        #print(stored)
 
     best_val = -999999
     best_move = None
@@ -54,6 +66,7 @@ def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, 
 
         opp = get_opponent(player)
 
+        # kutsu vaihdettuna takaisin vastustajalle beta/alpha
         val, _ = minimax_midgame(b2, opp, depth - 1, evaluate, -beta, -alpha, hash_moves)
         val = -val 
 
@@ -61,13 +74,14 @@ def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, 
             best_val = val
             best_move = m
 
-        # alpha-beta karsinta, minimoiva vastustaja lukitsee haaran, loput karsitaan
+        # alpha-beta karsinta, vastustaja ei hyväksyisi haaraa
         if best_val >= beta:
             hash_moves[key] = best_move
             return best_val, best_move
 
         alpha = max(alpha, best_val)
     
+    # tallennetaan löydetty paras siirto tähän asemaan transpositiokirjastoon
     if best_move is not None:
         hash_moves[key] = best_move
 

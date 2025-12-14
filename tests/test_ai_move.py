@@ -2,7 +2,7 @@ import unittest
 import copy
 
 from AI.ai_move import ai_move
-from reversi.board import new_board, valid_moves, black_piece, white_piece, empty_slot, play_move
+from reversi.board import new_board, valid_moves, black_piece, white_piece, empty_slot
 
 
 class TestAIMove(unittest.TestCase):

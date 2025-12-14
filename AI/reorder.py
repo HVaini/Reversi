@@ -1,4 +1,16 @@
 def reorder_moves(board, player, moves):
+    """
+    Esiluokittelee siirrot paremmuuden mukaan karkeilla kriteereillä
+    Alpha-Beta-Karsinnan tehostamiseksi.
+    Siirrot jotka johtavat kulman saamiseen ovat arvokkaimpia,
+    siirrot jotka voivat johtaa kulman menetyksen ovat huonoimpia.
+
+    :param board: pelilaudan tilanne
+    :param player: vuorossa oleva pelaaja
+    :param moves: lailliset siirrot pelaajalle
+    :return: lista siirroista järjestettynä 
+    """
+
     cornerlist = []
     worstlist = []
     badlist = []
