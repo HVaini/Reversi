@@ -1,5 +1,5 @@
-import random, copy
-from reversi.board import valid_moves, play_move, get_opponent, end_game, count_points
+import copy
+from reversi.board import valid_moves, play_move, get_opponent, end_game, count_points, black_piece
 
 def minimax_endscore(board, player, alpha=-999999, beta=999999):
     """
@@ -15,7 +15,11 @@ def minimax_endscore(board, player, alpha=-999999, beta=999999):
     # jos peli loppuu lasketaan pisteet
     if end_game(board):
         b, w = count_points(board)
-        return b - w, None
+        if player == black_piece:
+            diff = b - w
+        else:
+            diff = w - b
+        return diff, None
 
     moves = valid_moves(board, player)
     # jos ei siirtoja, vuoro vastustajalle

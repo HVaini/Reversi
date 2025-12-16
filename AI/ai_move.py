@@ -63,8 +63,8 @@ def ai_move(board, player):
     # kutsutaan iteratiivisen syventämisen kautta midgame-heuristiikkaa käyttävä minimax jos peli ei ole loppuvaiheessa
     elif empty_count <= 60:
         val, best, reached = iterative_deepening_midgame(copy.deepcopy(board), player, evaluate=evaluate_normal, time_limit = 2, max_depth = 60)
-        print(f"[Midgame] Tekoälyn arvio: {val}")
-        print(f"[Midgame] Tekoälyn siirto: {best}")
+        #print(f"[Midgame] Tekoälyn arvio: {val}")
+        #print(f"[Midgame] Tekoälyn siirto: {best}")
         return best
 
     # varmuuden vuoksi mukana jotta missään ennakoimattomassa tapauksessakaan

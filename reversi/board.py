@@ -63,7 +63,7 @@ def valid_moves(board, player):
             if board[i][j] != empty_slot:
                 continue
 
-            #nollataan vastustajan nappulan tarkistus vuoron aluksi    
+            #nollataan vastustajan nappulan tarkistus vuoron aluksi  
             for direction, (vertical, horizontal) in directions.items():
                 row = i + vertical
                 col = j + horizontal
@@ -109,25 +109,23 @@ def play_move(board, move, player):
     valid = valid_moves(board, player)
     if move in valid:
         for direction, (vertical, horizontal) in directions.items():
-             row = move_row + vertical
-             col = move_col + horizontal
-             #etsitään kuinka pitkään vastustajan nappulat jatkuvat linjalla
-             while (0 <= row < board_size and 0 <= col < board_size) and board[row][col] == opponent:
-                    row += vertical
-                    col += horizontal
+            row = move_row + vertical
+            col = move_col + horizontal
+            #etsitään kuinka pitkään vastustajan nappulat jatkuvat linjalla
+            while (0 <= row < board_size and 0 <= col < board_size) and board[row][col] == opponent:
+                row += vertical
+                col += horizontal
 
 
-             #kävellään takaisin alkupisteeseen ja käännetään nappulat          
-             if (0 <= row < board_size and 0 <= col < board_size) and board[row][col] == player:             
-                        
-                        
-                        
-                    r = row - vertical
-                    c= col - horizontal
-                    while (r, c) != (move_row, move_col):
-                        board[r][c] = player
-                        r -= vertical
-                        c -= horizontal
+            #kävellään takaisin alkupisteeseen ja käännetään nappulat     
+            if (0 <= row < board_size and 0 <= col < board_size) and board[row][col] == player:     
+                r = row - vertical
+                c= col - horizontal
+                while (r, c) != (move_row, move_col):
+                    board[r][c] = player
+                    r -= vertical
+                    c -= horizontal
+
         board[move_row][move_col] = player
 
 def count_points(board):
@@ -147,7 +145,7 @@ def end_game(board):
     if black_count + white_count == 64:
         return True
 
-    # tai jos toisella ei nappuloita jäljellä, tällöin siirtoja ei enää ole kummallakaan 
+    # tai jos toisella ei nappuloita jäljellä, tällöin siirtoja ei enää ole kummallakaan
     if black_count == 0 or white_count == 0:
         return True
     # jos kummallakaan pelaajalla ei ole laillisia siirtoja

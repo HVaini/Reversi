@@ -18,16 +18,16 @@ def main():
 
     choice = input("Valitse X (aloittava) painamalla 1 tai O painamalla 2:")
     if choice == "2":
-        human_player = white_piece
         ai_player = black_piece
     else:
-        human_player = black_piece
         ai_player = white_piece
 
     while True:
+        print()
         print_board(board)
         b_score, w_score = count_points(board)
         print(f"\nPisteet X: {b_score}  O: {w_score}")
+        print()
 
         if end_game(board):
             print("\nPeli päättyi.")

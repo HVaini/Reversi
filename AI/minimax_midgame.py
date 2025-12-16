@@ -1,5 +1,5 @@
 import copy
-from reversi.board import valid_moves, play_move, get_opponent, end_game, count_points, black_piece, white_piece
+from reversi.board import valid_moves, play_move, get_opponent, end_game, count_points, black_piece
 from AI.reorder import reorder_moves
 
 def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, hash_moves=None):
@@ -14,7 +14,7 @@ def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, 
     :param evaluate: Heuristiikkafunktio joka laskee pelitilanteen arvon
     :param alpha: Pelaajan parhaan löydetyn siirron arvo
     :param beta: Vastustajan parhaan löydetyn siirron arvo
-    :param hash_moves: Transpositiokirjasto johon tallennetaan eri asemien parhaita löydettyjä siirtoja 
+    :param hash_moves: Transpositiokirjasto, tallennetaan eri asemien parhaita löydettyjä siirtoja 
     :return: palauttaa evaluate-funktion arvon parhaalle siirrolle sekä itse siirron
     """
 
@@ -24,12 +24,12 @@ def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, 
 
     key = hash(str(board) + player)
 
-    # varmistetaan että jos peli päättyy millä tahansa syvyydellä niin palautettu arvo on niin suuri että se kumoaa heuristiikan
+    # jos peli päättyy millä tahansa syvyydellä niin palautettu arvo on niin suuri että se kumoaa heuristiikan
     if end_game(board):
         b, w = count_points(board)
         if player == black_piece:
             diff = b - w
-        else:  
+        else:
             diff = w - b
 
         if diff == 0:
@@ -68,7 +68,7 @@ def minimax_midgame(board, player, depth, evaluate, alpha=-999999, beta=999999, 
 
         # kutsu vaihdettuna takaisin vastustajalle beta/alpha
         val, _ = minimax_midgame(b2, opp, depth - 1, evaluate, -beta, -alpha, hash_moves)
-        val = -val 
+        val = -val
 
         if val > best_val:
             best_val = val
