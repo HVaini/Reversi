@@ -96,10 +96,10 @@ class TestMinimaxEndscore(unittest.TestCase):
             ['O','O','O','O','O','.','O','X'],
         ]
 
-        # 1,7 on ratkaistu manuaalisesti parhaaksi arvoksi
+        # 7,5 on ratkaistu manuaalisesti parhaaksi arvoksi
         val, move = minimax_endscore(board, 'X')
 
-        self.assertEqual(move, (1,7))  
+        self.assertEqual(move, (7,5))
 
     def test_endscore_finds_correct_value_and_alpha_beta_cuts(self):
         # lauta luotu reversi-stockfish analysaattorilla

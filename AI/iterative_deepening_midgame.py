@@ -3,8 +3,9 @@ from AI.minimax_midgame import minimax_midgame
 
 def iterative_deepening_midgame(board, player, evaluate, time_limit=2.0, max_depth=60):
     """
-    Katkaisee minimax-haun kun aikaraja on täynnä. Mahdollistaa syvemmät haut
-    silloin kun haarautuvuus on pientä
+    Katkaisee minimax-haun kun annettu aikaraja on täynnä tai kun 
+    peli loppuu. Mahdollistaa syvemmät haut
+    silloin kun haarautuvuus on pientä.
     
     :param board: Pelilaudan tilanne
     :param player: Vuorossa oleva pelaaja
@@ -34,6 +35,10 @@ def iterative_deepening_midgame(board, player, evaluate, time_limit=2.0, max_dep
             best_move = move
             best_val = val
             reached_depth = depth
+
+        if best_val is not None and best_val >= 100000:
+            print(f"[Mid] varma voitto syvyydellä {reached_depth}, arvo {best_val}")
+            break
 
         if time.time() - start >= time_limit:
             break
